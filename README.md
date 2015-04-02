@@ -16,6 +16,6 @@ $> node node bin/www
 
 [https://github.com/flatiron/director](Director)
 
-[https://facebook.github.io/react/](React)
+[https://www.polymer-project.org/0.5/](Polymer)
 
 [http://expressjs.com/](Express)
