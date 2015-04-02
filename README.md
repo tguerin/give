@@ -14,8 +14,8 @@ $> node node bin/www
 
 # Stack
 
-[https://github.com/flatiron/director](Director)
+[Director](https://github.com/flatiron/director)
 
-[https://www.polymer-project.org/0.5/](Polymer)
+[Polymer](https://www.polymer-project.org/0.5/)
 
-[http://expressjs.com/](Express)
+[Express](http://expressjs.com/)
