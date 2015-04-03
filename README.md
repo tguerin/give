@@ -9,7 +9,7 @@ Give your goods to friends and near persons.
 ```
 $> cd server
 $> npm install
-$> node node bin/www
+$> node bin/www
 ``` 
 
 # Stack
