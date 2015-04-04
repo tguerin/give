@@ -3,38 +3,147 @@
 <link rel="import" href="bower_components/paper-input/paper-input.html">
 <link rel="import" href="bower_components/paper-button/paper-button.html">
 <link rel="import" href="bower_components/core-ajax/core-ajax.html">
-<polymer-element name="add-item-form" attributes="item url">
+<link rel="import" href="bower_components/paper-spinner/paper-spinner.html"/>
+<link rel="import" href="bower_components/paper-toast/paper-toast.html"/>
+<polymer-element name="add-item-form" attributes="item url urlImage">
     <template>
+        <style type="text/css">
+            .form-input {
+                height: 100px;
+                width: 210px;
+            }
+
+            .form-textarea {
+                height: 150px;
+                width: 210px;
+            }
+
+            .form-submit {
+                text-align: center;
+                margin-top: 30px;
+                height: 44px;
+            }
+
+            .upload-file {
+                position: absolute;
+                opacity: 0;
+                z-index: 1;
+                height: 50px;
+            }
+
+            .spinner {
+                display: none;
+                margin: auto;
+            }
+
+            .upload-label {
+                height: 25px;
+                color: #A9A9A9;
+                margin-top: 40px;
+            }
+
+            .submit {
+                width: 100%;
+                color: white;
+                background: #9575CD;
+            }
+
+            :host {
+                padding: 50px 100px;
+                background: white;
+                border-radius: 3px;
+                box-shadow: 0 0px 5px rgba(0, 0, 0, .2);
+            }
+        </style>
         <form>
-            <div>
-                <paper-input-decorator id="nameDecorator" floatingLabel label="Name" error="Invalid name."
-                                       isInvalid="{{!$.name.validity.valid}}">
+            <div class="form-input">
+                <paper-input-decorator id="nameDecorator" floatingLabel label="Name" error="Please add a name.">
                     <input id="name" name="name" is="core-input" pattern="[a-zA-Z\s]{2,}" value="{{item.name}}" required
-                           autocomplete="off">
+                           autocomplete="off"/>
                 </paper-input-decorator>
             </div>
-            <div>
+            <div class="form-textarea">
                 <paper-input-decorator id="descriptionDecorator" floatingLabel label="Description"
-                                       error="Invalid description." isInvalid="{{!$.description.validity.valid}}">
-                    <input name="description" id="description" is="core-input" pattern="[a-zA-Z\s]{2,}"
-                           value="{{item.description}}" required autocomplete="off">
+                                       error="Please, add a description.">
+                    <textarea name="description" id="description" is="core-input" pattern="[a-zA-Z\s]{2,}"
+                              value="{{item.description}}" required autocomplete="off"></textarea>
                 </paper-input-decorator>
             </div>
-            <div>
-                <paper-button on-tap="{{doSend}}" raised>Add</paper-button>
+            <div class="form-input">
+                <paper-input-decorator id="fileDecorator" label="Description"
+                                       error="Please provide an accurate picture.">
+                    <input class="upload-file" id="file" type="file" is="core-input" on-change="{{setFile}}">
+
+                    <div id="uploadLabel" class="upload-label">Upload image</div>
+                </paper-input-decorator>
+            </div>
+            <div class="form-submit">
+                <paper-button id="submit" class="submit" on-tap="{{doSend}}" raised>Add</paper-button>
+                <paper-spinner id="spinner" active class="spinner"></paper-spinner>
             </div>
         </form>
-        <core-ajax id="ajax" method="POST" url="{{url}}" params="{{item}}" response="{{response}}"></core-ajax>
+        <core-ajax id="ajaxItem" method="POST" url="{{url}}" params="{{item}}"
+                   on-core-response="{{handleAjaxItemResponse}}" handleAs="json"></core-ajax>
+        <core-ajax id="ajaxImage" method="POST" url="{{urlImage}}"
+                   on-core-response="{{handleAjaxImageResponse}}"></core-ajax>
+        <paper-toast id="success" text="Your item has been created."></paper-toast>
     </template>
     <script>
         Polymer('add-item-form', {
             created: function () {
                 this.item = {};
             },
+            ready: function () {
+                var that = this;
+                this.$.name.addEventListener('keydown', function () {
+                    that.$.nameDecorator.isInvalid = !that.$.name.validity.valid;
+                });
+                this.$.description.addEventListener('keydown', function () {
+                    that.$.descriptionDecorator.isInvalid = !that.$.description.validity.valid;
+                });
+                this.$.file.addEventListener('change', function () {
+                    var noFile = that.$.file.value.length === 0;
+                    that.$.fileDecorator.isInvalid = noFile;
+                    if (noFile) {
+                        that.$.uploadLabel.innerHTML = 'Upload image';
+                    } else {
+                        that.$.uploadLabel.innerHTML = that.$.file.files[0].name;
+                    }
+                });
+            },
+            handleAjaxItemResponse: function () {
+                this.$.spinner.style.display = 'none';
+                this.$.submit.style.display = 'block';
+                this.$.name.value = null;
+                this.$.description.value = null;
+                this.$.file.value = null;
+                this.$.uploadLabel.innerHTML = 'Upload image';
+                this.$.success.opened = true;
+            },
+            handleAjaxImageResponse: function (response) {
+                this.item.image = JSON.parse(response.detail.response).id;
+                this.$.ajaxItem.go();
+            },
             doSend: function () {
-                if (this.$.name.validity.valid && this.$.description.validity.valid) {
-                    this.$.ajax.go();
+                this.$.nameDecorator.isInvalid = !this.$.name.validity.valid;
+                this.$.descriptionDecorator.isInvalid = !this.$.description.validity.valid;
+                this.$.fileDecorator.isInvalid = this.$.file.value.length === 0;
+                if (this.$.file.value.length > 0 > 0 && this.$.name.validity.valid && this.$.description.validity.valid) {
+                    this.$.spinner.style.display = 'block';
+                    this.$.submit.style.display = 'none';
+                    this.$.ajaxImage.go();
                 }
+            },
+            setFile: function (e, detail, sender) {
+                var formData = new FormData();
+
+                var file = sender.files[0];
+                formData.append(sender.name, file);
+
+                this.$.ajaxImage.body = formData;
+                // Override default type set by core-ajax.
+                // Allow browser to set the mime multipart content type itself.
+                this.$.ajaxImage.contentType = null;
             }
         });
     </script>
