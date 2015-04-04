@@ -1,0 +1,41 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/core-input/core-input.html">
+<link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/core-ajax/core-ajax.html">
+<polymer-element name="add-item-form" attributes="item url">
+    <template>
+        <form>
+            <div>
+                <paper-input-decorator id="nameDecorator" floatingLabel label="Name" error="Invalid name."
+                                       isInvalid="{{!$.name.validity.valid}}">
+                    <input id="name" name="name" is="core-input" pattern="[a-zA-Z\s]{2,}" value="{{item.name}}" required
+                           autocomplete="off">
+                </paper-input-decorator>
+            </div>
+            <div>
+                <paper-input-decorator id="descriptionDecorator" floatingLabel label="Description"
+                                       error="Invalid description." isInvalid="{{!$.description.validity.valid}}">
+                    <input name="description" id="description" is="core-input" pattern="[a-zA-Z\s]{2,}"
+                           value="{{item.description}}" required autocomplete="off">
+                </paper-input-decorator>
+            </div>
+            <div>
+                <paper-button on-tap="{{doSend}}" raised>Add</paper-button>
+            </div>
+        </form>
+        <core-ajax id="ajax" method="POST" url="{{url}}" params="{{item}}" response="{{response}}"></core-ajax>
+    </template>
+    <script>
+        Polymer('add-item-form', {
+            created: function () {
+                this.item = {};
+            },
+            doSend: function () {
+                if (this.$.name.validity.valid && this.$.description.validity.valid) {
+                    this.$.ajax.go();
+                }
+            }
+        });
+    </script>
+</polymer-element>
