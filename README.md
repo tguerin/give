@@ -7,10 +7,15 @@ Give your goods to friends and near persons.
 ## Back
 
 ```
-$> cd server
 $> npm install
 $> node bin/www
-``` 
+```
+
+## Front
+```
+$> cd public
+$> bower install
+```
 
 # Stack
 
