@@ -1,0 +1,1 @@
+INSERT INTO user (email, name) VALUES ('blacroix@xebia.fr', 'Benjamin Lacroix');
