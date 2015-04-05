@@ -76,7 +76,7 @@
             <div class="form-input">
                 <paper-input-decorator id="fileDecorator" label="Description"
                                        error="Please provide an accurate picture.">
-                    <input class="upload-file" id="file" type="file" is="core-input" on-change="{{setFile}}">
+                    <input class="upload-file" name="image" id="file" type="file" is="core-input" on-change="{{setFile}}">
 
                     <div id="uploadLabel" class="upload-label">Upload image</div>
                 </paper-input-decorator>
@@ -127,7 +127,7 @@
                 this.$.success.opened = true;
             },
             handleAjaxImageResponse: function (response) {
-                this.item.image = JSON.parse(response.detail.response).id;
+                this.item.image = JSON.parse(response.detail.response).image;
                 this.$.ajaxItem.go();
             },
             doSend: function () {
@@ -142,13 +142,9 @@
             },
             setFile: function (e, detail, sender) {
                 var formData = new FormData();
-
                 var file = sender.files[0];
-                formData.append(sender.name, file);
-
+                formData.append(sender.name, file, file.name);
                 this.$.ajaxImage.body = formData;
-                // Override default type set by core-ajax.
-                // Allow browser to set the mime multipart content type itself.
                 this.$.ajaxImage.contentType = null;
             },
             handleAjaxError: function () {

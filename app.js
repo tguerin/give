@@ -3,6 +3,8 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer = require('multer');
+var uuid = require('node-uuid');
 
 var users = require('./routes/users');
 var items = require('./routes/items');
@@ -10,11 +12,21 @@ var images = require('./routes/images');
 
 var app = express();
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(logger('dev'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(multer({
+    dest: './public/upload/',
+    rename: function (fieldname, filename) {
+        return uuid.v1() + path.extname(filename);
+    }
+}));
 
 app.use('/users', users);
 app.use('/items', items);
