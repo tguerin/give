@@ -54,6 +54,10 @@
                 border-radius: 3px;
                 box-shadow: 0 0px 5px rgba(0, 0, 0, .2);
             }
+
+            #error {
+                background-color: #D32F2F;
+            }
         </style>
         <form>
             <div class="form-input">
@@ -83,10 +87,12 @@
             </div>
         </form>
         <core-ajax id="ajaxItem" method="POST" url="{{url}}" params="{{item}}"
-                   on-core-response="{{handleAjaxItemResponse}}" handleAs="json"></core-ajax>
+                   on-core-response="{{handleAjaxItemResponse}}" handleAs="json"
+                   on-core-error="{{handleAjaxError}}"></core-ajax>
         <core-ajax id="ajaxImage" method="POST" url="{{urlImage}}"
-                   on-core-response="{{handleAjaxImageResponse}}"></core-ajax>
+                   on-core-response="{{handleAjaxImageResponse}}" on-core-error="{{handleAjaxError}}"></core-ajax>
         <paper-toast id="success" text="Your item has been created."></paper-toast>
+        <paper-toast id="error" text="Cannot create item for now."></paper-toast>
     </template>
     <script>
         Polymer('add-item-form', {
@@ -144,6 +150,11 @@
                 // Override default type set by core-ajax.
                 // Allow browser to set the mime multipart content type itself.
                 this.$.ajaxImage.contentType = null;
+            },
+            handleAjaxError: function () {
+                this.$.spinner.style.display = 'none';
+                this.$.submit.style.display = 'block';
+                this.$.error.opened = true;
             }
         });
     </script>
