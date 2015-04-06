@@ -11,6 +11,7 @@
     <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
     <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
     <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
+    <link rel="import" href="bower_components/core-ajax/core-ajax.html">
 
     <link rel="import" href="add-item-form.html">
     <link rel="import" href="login/login-form.html">
@@ -18,9 +19,9 @@
     <link rel="stylesheet" href="style/app.css">
 </head>
 <body unresolved fullbleed>
-<template is="auto-binding">
+<template id="template" is="auto-binding">
     <div layout horizontal center-center fit>
-        <core-animated-pages valueattr="hash">
+        <core-animated-pages valueattr="hash" selected="{{route}}">
             <section relative layout vertical center hash="login" class="container">
                 <login-form></login-form>
             </section>
@@ -30,6 +31,17 @@
             </section>
         </core-animated-pages>
     </div>
+    <core-ajax auto id="ajaxAuthenticated" method="GET" url="/auth/authenticated"
+               on-core-response="{{handleAjaxAuthenticatedResponse}}" on-core-error="{{handleAjaxAuthenticatedError}}"/>
 </template>
+<script>
+    var template = document.querySelector('#template');
+    template.handleAjaxAuthenticatedResponse = function (response) {
+        template.route = 'add-item';
+    };
+    template.handleAjaxAuthenticatedError = function (response) {
+        template.route = 'login';
+    };
+</script>
 </body>
 </html>

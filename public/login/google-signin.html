@@ -30,10 +30,10 @@
     <script>
         Polymer('google-signin', {
             signIn: function () {
-                console.log("Signing in")
+                window.location="/auth/google"
             },
             signInKeyPress: function () {
-                console.log("Signing in key press")
+                window.location="/auth/google"
             }
         })
     </script>
