@@ -5,8 +5,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var uuid = require('node-uuid');
+var passport = require('passport');
 
-var users = require('./routes/users');
+var auth = require('./routes/authentication');
 var items = require('./routes/items');
 var images = require('./routes/images');
 
@@ -21,14 +22,24 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(cookieParser());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
+});
+
+app.use('/auth', auth);
 app.use(multer({
     dest: './public/upload/',
     rename: function (fieldname, filename) {
         return uuid.v1() + path.extname(filename);
     }
 }));
-
-app.use('/users', users);
 app.use('/items', items);
 app.use('/images', images);
 

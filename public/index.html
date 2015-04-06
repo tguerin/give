@@ -10,14 +10,26 @@
     <link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
     <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
     <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+    <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
 
     <link rel="import" href="add-item-form.html">
+    <link rel="import" href="login/login-form.html">
 
     <link rel="stylesheet" href="style/app.css">
 </head>
-<body unresolved>
-<div class="container" layout vertical center>
-    <add-item-form url="items" urlImage="images"></add-item-form>
-</div>
+<body unresolved fullbleed>
+<template is="auto-binding">
+    <div layout horizontal center-center fit>
+        <core-animated-pages valueattr="hash">
+            <section relative layout vertical center hash="login" class="container">
+                <login-form></login-form>
+            </section>
+
+            <section relative layout vertical center hash="add-item" class="container">
+                <add-item-form url="items" urlImage="images"></add-item-form>
+            </section>
+        </core-animated-pages>
+    </div>
+</template>
 </body>
 </html>

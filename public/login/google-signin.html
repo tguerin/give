@@ -1,0 +1,40 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../bower_components/paper-button/paper-button-base.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="google-icons.html">
+
+<polymer-element name="google-signin" extends="paper-button-base" role="button">
+    <template>
+        <link rel="stylesheet" href="../style/google-signin.css" >
+        <paper-shadow id="shadow" fit animated></paper-shadow>
+        <div id="button"
+             class="height-standard width-standard theme-light signedIn-false  brand-google">
+            <paper-ripple id="ripple" fit></paper-ripple>
+
+            <!-- this div is needed to position the ripple behind text content -->
+            <div relative layout horizontal center-center>
+                <template if="{{ !signedIn }}">
+                    <div class="button-content signIn" tabindex="0"
+                         on-click="{{signIn}}" on-keydown="{{signInKeyPress}}">
+                        <span class="icon"><core-icon icon="google:google"></core-icon></span>
+                        <span class="buttonText">Connexion</span>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer('google-signin', {
+            signIn: function () {
+                console.log("Signing in")
+            },
+            signInKeyPress: function () {
+                console.log("Signing in key press")
+            }
+        })
+    </script>
+</polymer-element>

@@ -1,0 +1,23 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="google-signin.html">
+
+<polymer-element name="login-form">
+    <template>
+        <style type="text/css">
+            .title {
+                font-size: 50px;
+                padding-bottom: 50px;
+            },
+            .contain
+        </style>
+        <div layout vertical center-center class="container">
+            <div class="title">Give</div>
+            <div>
+                <google-signin></google-signin>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer('login-form', {});
+    </script>
+</polymer-element>
