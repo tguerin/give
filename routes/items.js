@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db');
+var mailer = require('../mailer');
 
 /* POST item. */
 router.post('/', function (req, res) {
@@ -11,6 +12,18 @@ router.post('/', function (req, res) {
         } else {
             req.body.id = result.insertId;
             res.status(201).json(req.body);
+            mailer.sendMail({
+                from: 'give.me.newsfeed@gmail.com',
+                to: req.session.passport.user.email,
+                subject: 'New item added',
+                text: req.body.description
+            }, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Message sent: ' + info.response);
+                }
+            });
         }
     });
 });
