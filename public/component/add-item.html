@@ -9,20 +9,33 @@
 <polymer-element name="add-item" attributes="item url urlImage">
     <template>
         <style type="text/css">
+            form {
+                font-size: 20px;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                left: 0;
+                right: 0;
+                height: 500px;
+            }
             .form-input {
                 height: 100px;
                 width: 210px;
+                margin: auto;
             }
 
             .form-textarea {
                 height: 150px;
                 width: 210px;
+                margin: auto;
             }
 
             .form-submit {
                 text-align: center;
-                margin-top: 30px;
                 height: 44px;
+                width: 150px;
+                margin: 30px auto 0 auto;
             }
 
             .upload-file {
@@ -38,32 +51,25 @@
             }
 
             .upload-label {
-                height: 25px;
+                height: 30px;
                 color: #A9A9A9;
                 margin-top: 40px;
             }
 
             .submit {
-                width: 100%;
                 color: white;
                 background: #9575CD;
-            }
-
-            :host {
-                padding: 50px 100px;
-                background: white;
-                border-radius: 3px;
-                box-shadow: 0 0px 5px rgba(0, 0, 0, .2);
             }
 
             #error {
                 background-color: #D32F2F;
             }
         </style>
-        <form>
+        <form center-justified layout>
             <div class="form-input">
                 <paper-input-decorator id="nameDecorator" floatingLabel label="Name" error="Please add a name.">
-                    <input id="name" name="name" is="core-input" pattern="[a-zA-Z\s]{2,}" value="{{item.name}}" required
+                    <input id="name" name="name" is="core-input" pattern="[a-zA-Z\s]{2,}" value="{{item.name}}"
+                           required
                            autocomplete="off"/>
                 </paper-input-decorator>
             </div>
@@ -77,7 +83,8 @@
             <div class="form-input">
                 <paper-input-decorator id="fileDecorator" label="Description"
                                        error="Please provide an accurate picture.">
-                    <input class="upload-file" name="image" id="file" type="file" is="core-input" on-change="{{setFile}}">
+                    <input class="upload-file" name="image" id="file" type="file" is="core-input"
+                           on-change="{{setFile}}">
 
                     <div id="uploadLabel" class="upload-label">Upload image</div>
                 </paper-input-decorator>
