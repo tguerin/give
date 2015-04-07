@@ -11,6 +11,7 @@ var db = require('./db');
 
 var auth = require('./routes/authentication');
 var items = require('./routes/items');
+var users = require('./routes/users');
 var images = require('./routes/images');
 
 var app = express();
@@ -57,5 +58,6 @@ app.use(multer({
 }));
 app.use('/items', items);
 app.use('/images', images);
+app.use('/users', users);
 
 module.exports = app;

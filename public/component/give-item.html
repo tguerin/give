@@ -1,0 +1,38 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html"/>
+<polymer-element name="give-item" attributes="item">
+    <template>
+        <style>
+            #content {
+                margin: 5px;
+                height: 100px;
+                background-color: #EEEEEE;
+                border-radius: 3px;
+                font-size: 18px;
+                overflow: hidden;
+            }
+
+            #image img {
+                margin: 5px;
+                width: 100px;
+            }
+
+            #name {
+                margin-left: 5px;
+            }
+        </style>
+        <div id="content" horizontal layout>
+            <div id="image"><img src="upload/{{item.image}}"></div>
+            <div id="name" self-center>{{item.name}}</div>
+            <div id="description" flex self-center>{{item.description}}</div>
+            <div self-center>
+                <paper-button raised colored>
+                    <core-icon icon="highlight-remove">Remove</core-icon>
+                </paper-button>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({});
+    </script>
+</polymer-element>
