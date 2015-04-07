@@ -12,35 +12,41 @@
     <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
     <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
     <link rel="import" href="bower_components/core-ajax/core-ajax.html">
+    <link rel="import" href="bower_components/core-scaffold/core-scaffold.html">
+    <link rel="import" href="bower_components/app-router/app-router.html">
 
-    <link rel="import" href="add-item-form.html">
+    <link rel="import" href="page/give-app.html">
     <link rel="import" href="login/login-form.html">
 
     <link rel="stylesheet" href="style/app.css">
 </head>
 <body unresolved fullbleed>
+<app-router>
+    <app-route path="/login" import="login/login-form.html"></app-route>
+    <app-route path="/" import="page/give-app.html"></app-route>
+</app-router>
 <template id="template" is="auto-binding">
-    <div layout horizontal center-center fit>
-        <core-animated-pages valueattr="hash" selected="{{route}}">
-            <section relative layout vertical center hash="login" class="container">
-                <login-form></login-form>
-            </section>
-
-            <section relative layout vertical center hash="add-item" class="container">
-                <add-item-form url="items" urlImage="images"></add-item-form>
-            </section>
-        </core-animated-pages>
-    </div>
-    <core-ajax auto id="ajaxAuthenticated" method="GET" url="/auth/authenticated"
+    <!--<div layout horizontal center-center fit>-->
+    <!--<core-animated-pages id="pages" valueattr="hash" selected="{{route}}">-->
+    <!--<section relative layout vertical center hash="login" class="container">-->
+    <!--<login-form></login-form>-->
+    <!--</section>-->
+    <!---->
+    <!--<section relative layout vertical center hash="app" class="container">-->
+    <!--<give-app></give-app>-->
+    <!--</section>-->
+    <!--</core-animated-pages>-->
+    <!--</div>-->
+    <core-ajax auto id="ajaxAuthenticated" url="/auth/authenticated"
                on-core-response="{{handleAjaxAuthenticatedResponse}}" on-core-error="{{handleAjaxAuthenticatedError}}"/>
+    </core-ajax>
 </template>
 <script>
     var template = document.querySelector('#template');
-    template.handleAjaxAuthenticatedResponse = function (response) {
-        template.route = 'add-item';
+    template.handleAjaxAuthenticatedResponse = function () {
     };
-    template.handleAjaxAuthenticatedError = function (response) {
-        template.route = 'login';
+    template.handleAjaxAuthenticatedError = function () {
+        window.location = '#/login';
     };
 </script>
 </body>

@@ -1,11 +1,12 @@
-<link rel="import" href="bower_components/polymer/polymer.html">
-<link rel="import" href="bower_components/core-input/core-input.html">
-<link rel="import" href="bower_components/paper-input/paper-input.html">
-<link rel="import" href="bower_components/paper-button/paper-button.html">
-<link rel="import" href="bower_components/core-ajax/core-ajax.html">
-<link rel="import" href="bower_components/paper-spinner/paper-spinner.html"/>
-<link rel="import" href="bower_components/paper-toast/paper-toast.html"/>
-<polymer-element name="add-item-form" attributes="item url urlImage">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-input/core-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html"/>
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html"/>
+
+<polymer-element name="add-item" attributes="item url urlImage">
     <template>
         <style type="text/css">
             .form-input {
@@ -95,7 +96,7 @@
         <paper-toast id="error" text="Cannot create item for now."></paper-toast>
     </template>
     <script>
-        Polymer('add-item-form', {
+        Polymer({
             created: function () {
                 this.item = {};
             },
